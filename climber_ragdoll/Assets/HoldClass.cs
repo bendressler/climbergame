@@ -15,20 +15,27 @@ public class HoldClass : MonoBehaviour {
 
 
 	public void init(float holdsize, Vector2 position) {
+		
 		coord = position;
 		size = holdsize;
 		busy = false;
 		this.transform.position = new Vector3 (coord.x, coord.y, 0.2f);
 		transform.localScale = new Vector3 (0.5f, 0.5f, 0);
 		transform.localScale += new Vector3((0.3f * size), (0.3f * size), (0));
+
 	}
+
 
 	//returns true if colliding with a physical object
-	void OnCollisionStay (Collision collisionInfo){
+	void OnCollisionStay2D (Collision2D collisionInfo){
+
 		colliding = true;
-	}
+
+		}
+
 
 	void Start () {
+		
 		climber = GameObject.Find ("climber");
 		holdcontainer = GameObject.Find ("holdContainer");
 		busy = false;
@@ -41,6 +48,14 @@ public class HoldClass : MonoBehaviour {
 		else {
 			holdcontainer.GetComponent<HoldContainer> ().highesthold = gameObject;
 		}
+
+	}
+
+
+	// Update is called once per frame
+	void Update () {
+		
+
 	}
 
 

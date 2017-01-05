@@ -60,7 +60,7 @@ public class GameController : MonoBehaviour {
 		txtstrength.text = ("Strength left: " + Mathf.Round(totalstrength));
 		txtgrip.text = ("Current grip: " + Mathf.Round(grippctg) + "%");
 		txtheight.text = ("Height: " + Mathf.Round((totalheight / 3)) + "m");
-		txtgameover.text = ("Game Over: You climbed " + Mathf.Round (totalheight / 3) + " metres!");
+		//txtgameover.text = ("Game Over: You climbed " + Mathf.Round (totalheight / 3) + " metres!");
 	}
 
 }
