@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ClimberClass : MonoBehaviour {
 
@@ -14,6 +15,8 @@ public class ClimberClass : MonoBehaviour {
 	public GameObject selectlimb;
 	public float reach;
 	public Camera cam;
+	public List<GameObject> allholds = new List<GameObject>();
+
 
 
 	// Use this for initialization

@@ -11,6 +11,7 @@ public class HoldContainer : MonoBehaviour {
 	public List<GameObject> oldforks = new List<GameObject> ();
 	public GameObject hold;
 	public GameObject temphold;
+	public GameObject wall;
 
 	public Camera cam;
 
@@ -29,6 +30,7 @@ public class HoldContainer : MonoBehaviour {
 	public Vector2 fork;
 	public Vector2 newfork;
 	private GameObject forker;
+	private int wallcounter;
 
 	private float upperlimit;
 	public GameObject highesthold;
@@ -105,10 +107,11 @@ public class HoldContainer : MonoBehaviour {
 		radius = 2.5f;
 		forkmax = 6;
 		fieldwidth = 30;
+		wallcounter = 1;
 
 		setHolds (forker.transform.position);
 		newforks.Add (forker);
-		upperlimit = 3;
+		upperlimit = 10;
 		setNewForks ();
 
 	}
@@ -117,6 +120,11 @@ public class HoldContainer : MonoBehaviour {
 	void Update () {
 		if ((noHoldAbove (upperlimit)) ) {
 			setNewForks ();
+		}
+
+		if (cam.transform.position.y > (18 * wallcounter) - 5){
+			wall = Instantiate (wall, new Vector2(wall.transform.position.x, wall.transform.position.y + 24),Quaternion.identity) as GameObject;
+			wallcounter += 1;
 		}
 	}
 

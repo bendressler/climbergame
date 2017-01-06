@@ -6,6 +6,8 @@ public class Limb : ClimberClass {
 	public GameObject oldhold;
 	public bool reaching;
 	public GameObject climber;
+	public GameObject controller;
+	private float strain;
 
 
 
@@ -14,6 +16,8 @@ public class Limb : ClimberClass {
 	void Start () {
 
 		reaching = false;
+		controller = GameObject.Find("controller");
+
 
 	}
 
@@ -26,7 +30,7 @@ public class Limb : ClimberClass {
 				Approximate ();
 
 		}
-
+			
 	}
 
 	void OnMouseDown(){
@@ -39,6 +43,9 @@ public class Limb : ClimberClass {
 		if ((col.gameObject.layer == 8) && reaching) {
 
 			if (col.gameObject != oldhold) {
+				strain = col.gameObject.GetComponent<HoldClass> ().size;
+				climber.GetComponent<ClimberClass> ().allholds.Remove (oldhold);
+				climber.GetComponent<ClimberClass> ().allholds.Add (col.gameObject);
 				oldhold = col.gameObject;
 				reaching = false;
 				Debug.Log ("Got a new hold!");
@@ -58,7 +65,7 @@ public class Limb : ClimberClass {
 
 	public void Approximate (){
 		if (GetComponent<DistanceJoint2D> ().distance > 0.05f) {
-			GetComponent<DistanceJoint2D> ().distance -= 0.01f;
+			GetComponent<DistanceJoint2D> ().distance -= 0.025f;
 			Debug.Log ("Pulling closer");
 		}
 	 	else {
