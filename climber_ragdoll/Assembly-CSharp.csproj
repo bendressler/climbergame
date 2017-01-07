@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\HoldContainer.cs" />
      <Compile Include="Assets\Scripts\Limb.cs" />
      <Compile Include="Assets\Scripts\LowerLimbClass.cs" />
+     <Compile Include="Assets\Scripts\MotorScript.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>

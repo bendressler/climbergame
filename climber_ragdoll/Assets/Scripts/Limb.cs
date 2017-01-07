@@ -38,11 +38,11 @@ public class Limb : ClimberClass {
 	}
 
 
-	void OnCollisionStay2D(Collision2D col){
+	void OnCollisionEnter2D(Collision2D col){
 
 		if ((col.gameObject.layer == 8) && reaching) {
 
-			if (col.gameObject != oldhold) {
+			if ((col.gameObject != oldhold) && (col.gameObject.GetComponent<HoldClass>().busy == false)) {
 				strain = col.gameObject.GetComponent<HoldClass> ().size;
 				climber.GetComponent<ClimberClass> ().allholds.Remove (oldhold);
 				climber.GetComponent<ClimberClass> ().allholds.Add (col.gameObject);
@@ -52,6 +52,7 @@ public class Limb : ClimberClass {
 			}
 		}
 	}
+		
 
 
 	public void Reach(Camera camera){

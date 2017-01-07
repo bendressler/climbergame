@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HoldClass : MonoBehaviour {
 	
 	public Vector2 coord;
 	public bool busy;
 	public bool colliding;
-	private float temps;
+	public int slots;
+	public List<GameObject> limbs = new List<GameObject>();
 
 	public float size; //difficulty, is assessed by limbs/torso to calculate grip
 
 	private GameObject climber;
 	private GameObject holdcontainer;
+	private float temps;
 
 
 	public void init(float holdsize, Vector2 position) {
@@ -27,16 +30,39 @@ public class HoldClass : MonoBehaviour {
 
 
 	//returns true if colliding with a physical object
-	void OnCollisionStay2D (Collision2D collisionInfo){
+	void OnCollisionStay2D (Collision2D col){
 
 		colliding = true;
 
+
+		if ((col.gameObject.layer == 9) && !limbs.Contains (col.gameObject) && !busy) {
+			limbs.Add (col.gameObject);
 		}
+
+		if (limbs.Count >= slots) {
+			busy = true;
+		} else {
+			busy = false;
+		}
+
+		foreach (GameObject item in limbs) {
+			if (col.gameObject != item) {
+				limbs.Remove (item);
+			}
+		}
+	}
+
+	void OnCollisionExit2D (Collision2D col2){
+		
+		if (limbs.Count < 1) {
+			colliding = false;
+		}
+	}
 
 
 	void Start () {
 		
-		//climber = GameObject.Find ("climber");
+		climber = GameObject.Find ("climber");
 		holdcontainer = GameObject.Find ("holdContainer");
 		busy = false;
 		holdcontainer.GetComponent<HoldContainer> ().allholds.Add (gameObject);
@@ -48,60 +74,14 @@ public class HoldClass : MonoBehaviour {
 		else {
 			holdcontainer.GetComponent<HoldContainer> ().highesthold = gameObject;
 		}
+			
+
 
 	}
 
 
 	// Update is called once per frame
 	void Update () {
-		
-
+		slots = (Mathf.RoundToInt(size / 3) + 1);
 	}
-
-
-	/*
-	//on click: if a limb is selected and the hold isnt busy, sends its own ID over to torsoClass as target variable, triggers torso movement
-	void OnMouseUp() {
-		if (Input.GetMouseButtonUp(0) && ((Time.time - temps) < 0.2)){
-			if ((torso.GetComponent<Climber> ().selectlimb != null) && (!this.busy)) {
-				torso.GetComponent<Climber> ().targetpoint = this.gameObject;
-				torso.GetComponent<Climber> ().movetorso ();
-				Debug.Log ("I'm the target");
-			} else {
-				Debug.Log ("There is no target");
-			}
-		}
-		// on long press: if a limb is selected and the hold isnt busy and the torso can jump, makes self the target, asks limb to move and sets jumping to true
-		if (Input.GetMouseButtonUp (0) && ((Time.time - temps) > 0.2)) {
-			Debug.Log ("Wanna jump");
-			if ((torso.GetComponent<torsoClass> ().selectlimb != null) && (!this.busy)) {
-				if (torso.GetComponent<torsoClass> ().canjump(gameObject)){
-					torso.GetComponent<torsoClass> ().targetvar = gameObject;
-					torso.GetComponent<torsoClass>().moveSelectLimb();
-					torso.GetComponent<torsoClass>().jumping = true;
-					busy = false;
-					Debug.Log ("I can jump");
-				}
-			}
-		}
-	}
-
-
-
-
-	// Use this for initialization
-
-
-	
-	// Update is called once per frame
-	void Update () {
-		//longpress
-		if ( Input.GetMouseButtonDown (0) )
-		{
-			temps = Time.time;
-
-		}
-
-	}
-	*/
 }
