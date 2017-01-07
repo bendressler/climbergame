@@ -99,12 +99,12 @@ public class HoldContainer : MonoBehaviour {
 		forker = GameObject.Find("forker");
 
 		//difficulty variables
-		diffavg = 3.0f;
+		diffavg = 5.0f;
 		diffvar = 2.0f;
 		minholds = 3;
 		maxholds = 5;
 	
-		radius = 2.5f;
+		radius = 3.5f;
 		forkmax = 6;
 		fieldwidth = 30;
 		wallcounter = 1;

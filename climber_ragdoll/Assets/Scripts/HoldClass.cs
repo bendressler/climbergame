@@ -9,6 +9,9 @@ public class HoldClass : MonoBehaviour {
 	public bool colliding;
 	public int slots;
 	public List<GameObject> limbs = new List<GameObject>();
+	public Sprite small;
+	public Sprite normal;
+	public Sprite large;
 
 	public float size; //difficulty, is assessed by limbs/torso to calculate grip
 
@@ -23,8 +26,8 @@ public class HoldClass : MonoBehaviour {
 		size = holdsize;
 		busy = false;
 		this.transform.position = new Vector3 (coord.x, coord.y, 0.2f);
-		transform.localScale = new Vector3 (0.2f, 0.2f, 0);
-		transform.localScale += new Vector3((0.3f * size), (0.3f * size), (0));
+		transform.localScale = new Vector3 (0.1f, 0.1f, 0);
+		transform.localScale += new Vector3((0.2f * size), (0.2f * size), (0));
 
 	}
 
@@ -75,13 +78,15 @@ public class HoldClass : MonoBehaviour {
 			holdcontainer.GetComponent<HoldContainer> ().highesthold = gameObject;
 		}
 			
-
+		if (size > 6) {
+			gameObject.GetComponent<SpriteRenderer> ().sprite = large;
+		}
 
 	}
 
 
 	// Update is called once per frame
 	void Update () {
-		slots = (Mathf.RoundToInt(size / 3) + 1);
+		slots = (Mathf.RoundToInt(size / 3));
 	}
 }
