@@ -12,6 +12,7 @@ public class MotorScript : MonoBehaviour {
 	public HingeJoint2D hinge;
 	public JointMotor2D motor;
 
+
 	// Use this for initialization
 	void Start () {
 
@@ -26,6 +27,7 @@ public class MotorScript : MonoBehaviour {
 		angle = hinge.jointAngle;
 		reaction = hinge.reactionTorque;
 
+		//if angle is larger than the max or smaller than the min, apply rotation counter to it
 		if (!((angle < maxangle) && (angle > minangle))) {
 
 			force = angle - targetangle;

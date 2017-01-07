@@ -8,18 +8,20 @@ public class HoldClass : MonoBehaviour {
 	public bool busy;
 	public bool colliding;
 	public int slots;
+
 	public List<GameObject> limbs = new List<GameObject>();
+
 	public Sprite small;
 	public Sprite normal;
 	public Sprite large;
 
-	public float size; //difficulty, is assessed by limbs/torso to calculate grip
+	public float size;
 
-	private GameObject climber;
 	private GameObject holdcontainer;
 	private float temps;
 
 
+	//when created by the HoldContainer, assume coordinates, size and adjust sprite size accordingly
 	public void init(float holdsize, Vector2 position) {
 		
 		coord = position;
@@ -32,27 +34,11 @@ public class HoldClass : MonoBehaviour {
 	}
 
 
-	//returns true if colliding with a physical object
+	//if colliding with a physical object, return true
 	void OnCollisionStay2D (Collision2D col){
 
 		colliding = true;
 
-
-		if ((col.gameObject.layer == 9) && !limbs.Contains (col.gameObject) && !busy) {
-			limbs.Add (col.gameObject);
-		}
-
-		if (limbs.Count >= slots) {
-			busy = true;
-		} else {
-			busy = false;
-		}
-
-		foreach (GameObject item in limbs) {
-			if (col.gameObject != item) {
-				limbs.Remove (item);
-			}
-		}
 	}
 
 	void OnCollisionExit2D (Collision2D col2){
@@ -65,7 +51,6 @@ public class HoldClass : MonoBehaviour {
 
 	void Start () {
 		
-		climber = GameObject.Find ("climber");
 		holdcontainer = GameObject.Find ("holdContainer");
 		busy = false;
 		holdcontainer.GetComponent<HoldContainer> ().allholds.Add (gameObject);
@@ -78,8 +63,18 @@ public class HoldClass : MonoBehaviour {
 			holdcontainer.GetComponent<HoldContainer> ().highesthold = gameObject;
 		}
 			
-		if (size > 6) {
+		if (size > 4.5f) {
 			gameObject.GetComponent<SpriteRenderer> ().sprite = large;
+
+		} else if (size < 1.5f) {
+			gameObject.GetComponent<SpriteRenderer> ().sprite = small;
+		} else {
+			gameObject.GetComponent<SpriteRenderer> ().sprite = normal;
+		}
+
+		slots = (Mathf.RoundToInt(size / 3));
+		if (slots < 1) {
+			slots = 1;
 		}
 
 	}
@@ -87,6 +82,13 @@ public class HoldClass : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		slots = (Mathf.RoundToInt(size / 3));
+
+		//if there are equal or more limbs attached than the hold has slots, be busy
+		if (limbs.Count >= slots) {
+			busy = true;
+		} else {
+			busy = false;
+		}
+
 	}
 }

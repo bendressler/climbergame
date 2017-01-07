@@ -23,9 +23,6 @@ public class GameController : MonoBehaviour {
 	public GameObject holdcontainer;
 	public Camera cam;
 
-	void endGame(){
-		gameover = true;
-	}
 
 
 	void Start(){
@@ -39,21 +36,36 @@ public class GameController : MonoBehaviour {
 
 	void Update(){
 
+		//subtract strain from total energy 
+		totalstrength -= (GetStrain() * 0.001f);
+
+		//update score
 		totalheight = (cam.transform.position.y - startheight);
+
+		//end game if energy is < 0
 		if ((totalstrength < 1) && !gameover) {
 			Debug.Log ("I'm ending this");
 			endGame ();
 		}
+
+		//update text
 		txtstrength.text = ("Strength left: " + Mathf.Round(totalstrength));
 		txtgrip.text = ("Current grip: -" + Mathf.Round(totalstrain));
 		txtheight.text = ("Height: " + Mathf.Round((totalheight / 3)) + "m");
 		//txtgameover.text = ("Game Over: You climbed " + Mathf.Round (totalheight / 3) + " metres!");
-		totalstrength -= (GetStrain() * 0.001f);
+
+
 
 
 	}
 
 
+	void endGame(){
+		gameover = true;
+	}
+
+
+	//sum up current hold sizes, torso rotation and x/y spread and add it to the strain 
 	float GetStrain(){
 		
 		totalstrain = 0;
@@ -69,7 +81,10 @@ public class GameController : MonoBehaviour {
 		return totalstrain;
 	}
 
+
+	//collect all limb's X coordinates and calculate the difference between the most left and right
 	float GetXSpread(){
+
 		float lhandx = climber.GetComponent<ClimberClass> ().lefthand.transform.position.x;
 		float rhandx = climber.GetComponent<ClimberClass> ().righthand.transform.position.x;
 		float lfootx = climber.GetComponent<ClimberClass> ().leftfoot.transform.position.x;
@@ -81,6 +96,7 @@ public class GameController : MonoBehaviour {
 		coordsx.Add (rfootx);
 		float left = lhandx;
 		float right = lhandx;
+
 		foreach (float i in coordsx) {
 			if (i < left) {
 				left = i;
@@ -90,9 +106,12 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		return Mathf.Abs(right - left);
+
 	}
 
+	//collect all limb's Y coordinates and calculate the difference between the most top and bottom
 	float GetYSpread(){
+		
 		float lhandy = climber.GetComponent<ClimberClass> ().lefthand.transform.position.y;
 		float rhandy = climber.GetComponent<ClimberClass> ().righthand.transform.position.y;
 		float lfooty = climber.GetComponent<ClimberClass> ().leftfoot.transform.position.y;
@@ -104,6 +123,7 @@ public class GameController : MonoBehaviour {
 		coordsy.Add (rfooty);
 		float top = lhandy;
 		float bottom = lhandy;
+
 		foreach (float i in coordsy) {
 			if (i < top) {
 				top = i;
@@ -113,5 +133,6 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		return Mathf.Abs(top - bottom);
+
 	}
 }

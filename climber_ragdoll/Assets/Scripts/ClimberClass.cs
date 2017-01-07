@@ -17,33 +17,40 @@ public class ClimberClass : MonoBehaviour {
 	public Camera cam;
 	public List<GameObject> allholds = new List<GameObject>();
 	public float rotate;
+
 	private Rigidbody2D torsorb;
 
 
 	// Use this for initialization
 	void Start () {
-		
+
+		torsorb = torso.GetComponent<Rigidbody2D> ();
 		armreach = 3f;
 		legreach = 3.5f;
 		selectlimb = rightfoot;
 		target = rightfoot.GetComponent<Transform> ().position;
 		reach = 5;
-		torsorb = torso.GetComponent<Rigidbody2D> ();
-		torsorb.centerOfMass = new Vector2 (torsorb.centerOfMass.x, torsorb.centerOfMass.y - 0.5f);
 		rotate = torsorb.rotation;
+
+		//set centre of gravity in the torso lower
+		torsorb.centerOfMass = new Vector2 (torsorb.centerOfMass.x, torsorb.centerOfMass.y - 0.5f);
 	
 	}
 
 
 	void Update (){
-			
+
+		//if the climber is clicked, call the selected limb's Reach() function
 		if (Input.GetMouseButton (0)) {
+
 			selectlimb.GetComponent<Limb> ().Reach (cam);
 
 		}
 
+		//update the torso's rotation
 		rotate = torsorb.rotation;
 
+		//if the torso tilts too far, apply an anti-force
 		if (rotate < -5) {
 			//Debug.Log ("Positive torque");
 			torsorb.AddTorque (20);

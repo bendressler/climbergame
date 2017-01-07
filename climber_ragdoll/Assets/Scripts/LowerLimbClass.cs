@@ -18,6 +18,7 @@ public class LowerLimbClass : MonoBehaviour {
 		
 	}
 
+	//if clicked, make the climber select the attached limb 
 	void OnMouseDown(){
 		climber.GetComponent<ClimberClass> ().selectlimb = limb.gameObject;
 	}
